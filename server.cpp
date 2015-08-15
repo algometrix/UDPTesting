@@ -28,8 +28,8 @@ void recv(const boost::system::error_code& /*e*/,
 			&len);
 	if (n > 0) {
 
-		int last_byte = mesg[10] - '0';
-
+		int last_byte = mesg[n-2] - '0';
+		//printf("Data : %c\n", mesg[n-2]);
 		if (last_byte == (tracker % 9) + 1) {
 			//printf("Data : %d %d\n", last_byte, tracker);
 		}

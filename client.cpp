@@ -22,7 +22,7 @@ using namespace std;
 
 int send_data(const boost::system::error_code& /*e*/,
 		boost::asio::deadline_timer* t) {
-	char sendline[]= "RANDOMDATA"; // 50 bytes payload
+	char sendline[]= "RANDOMDATARANDOMDATARANDOMDATARANDOMDATARANDOMDATA"; // 50 bytes payload
 	char recvline[1000];
 	app[0]=49+(packets%9);
 	strcat(sendline,app);
