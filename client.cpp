@@ -16,14 +16,19 @@
 struct sockaddr_in servaddr, cliaddr;
 int sockfd;
 long long packets = 0;
+char app[]="1\n";
+
+using namespace std;
 
 int send_data(const boost::system::error_code& /*e*/,
 		boost::asio::deadline_timer* t) {
-	char sendline[] = "RANDOMDATARANDOMDATARANDOMDATARANDOMDATARANDOMDATA"; // 50 bytes payload
+	char sendline[]= "RANDOMDATA"; // 50 bytes payload
 	char recvline[1000];
-
+	app[0]=49+(packets%9);
+	strcat(sendline,app);
 	sendto(sockfd, sendline, strlen(sendline), 0, (struct sockaddr *) &servaddr,
 			sizeof(servaddr));
+
 
 	printf("Packet Sent:%lld\n", packets++);
 
@@ -39,7 +44,7 @@ int main(int argc, char**argv) {
 		exit(1);
 	}
 
-	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+	sockfd = socket(AF_INET, SOCK_DGRAM, 0); // SOCK_DGRAM for UDP
 
 	bzero(&servaddr, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;

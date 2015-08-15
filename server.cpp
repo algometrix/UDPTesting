@@ -14,6 +14,8 @@
 struct sockaddr_in servaddr, cliaddr;
 int sockfd;
 long long packets = 0;
+int tracker = 9;
+long long out_order=0;
 
 void recv(const boost::system::error_code& /*e*/,
 		boost::asio::deadline_timer* t) {
@@ -26,6 +28,15 @@ void recv(const boost::system::error_code& /*e*/,
 			&len);
 	if (n > 0) {
 
+		int last_byte = mesg[10] - '0';
+
+		if (last_byte == (tracker % 9) + 1) {
+			//printf("Data : %d %d\n", last_byte, tracker);
+		}
+		else{
+			out_order++;
+		}
+		tracker = last_byte;
 		packets++;
 
 	}
@@ -37,11 +48,13 @@ void recv(const boost::system::error_code& /*e*/,
 void print_packets(const boost::system::error_code& /*e*/,
 		boost::asio::deadline_timer* t) {
 
-
 	printf("Received Packets:%lld\n", packets);
+	printf("Out Of Order Packets:%lld\n", out_order);
 
-	t->expires_at(t->expires_at() + boost::posix_time::milliseconds(PRINT_RATE));
-	t->async_wait(boost::bind(print_packets, boost::asio::placeholders::error, t));
+	t->expires_at(
+			t->expires_at() + boost::posix_time::milliseconds(PRINT_RATE));
+	t->async_wait(
+			boost::bind(print_packets, boost::asio::placeholders::error, t));
 }
 int main(int argc, char**argv) {
 
