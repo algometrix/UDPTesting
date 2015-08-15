@@ -21,7 +21,7 @@ long long packets = 0;
 
 int send_data(const boost::system::error_code& /*e*/,
 		boost::asio::deadline_timer* t) {
-	char sendline[] = "RANDOMDATARANDOMDATARANDOMDATARANDOMDATARANDOMDATA";
+	char sendline[] = "RANDOMDATARANDOMDATARANDOMDATARANDOMDATARANDOMDATA"; // 50 bytes payload
 	char recvline[1000];
 
 	sendto(sockfd, sendline, strlen(sendline), 0, (struct sockaddr *) &servaddr,
