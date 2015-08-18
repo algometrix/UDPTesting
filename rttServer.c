@@ -23,6 +23,8 @@ int main(int argc, char**argv)
       len = sizeof(cliaddr);
       n = recvfrom(sockfd,mesg,1000,0,(struct sockaddr *)&cliaddr,&len);
       sendto(sockfd,mesg,n,0,(struct sockaddr *)&cliaddr,sizeof(cliaddr));
-
+      if(n>0){
+    	  printf("Received\n");
+      }
    }
 }
